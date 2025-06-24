@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hhz.bms.bms.mapper.VehicleInfoMapper">
+
+    <insert id="insert" parameterType="com.hhz.bms.bms.entity.VehicleInfo">
+        INSERT INTO vehicle_info (vid, car_id, battery_type, total_mileage_km, battery_health_percent)
+        VALUES (#{vid}, #{carId}, #{batteryType}, #{totalMileageKm}, #{batteryHealthPercent})
+    </insert>
+
+    <update id="update" parameterType="com.hhz.bms.bms.entity.VehicleInfo">
+        UPDATE vehicle_info
+        SET vid = #{vid},
+            car_id = #{carId},
+            battery_type = #{batteryType},
+            total_mileage_km = #{totalMileageKm},
+            battery_health_percent = #{batteryHealthPercent}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM vehicle_info WHERE id = #{id}
+    </delete>
+
+    <select id="findByCarId" resultType="com.hhz.bms.bms.entity.VehicleInfo">
+        SELECT * FROM vehicle_info WHERE car_id = #{carId}
+    </select>
+
+    <select id="findAll" resultType="com.hhz.bms.bms.entity.VehicleInfo">
+        SELECT * FROM vehicle_info ORDER BY id DESC
+    </select>
+
+</mapper>

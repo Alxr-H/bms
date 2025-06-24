@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hhz.bms.bms.mapper.AlarmRuleSegmentMapper">
+
+    <select id="findMatchedRule" resultType="com.hhz.bms.bms.entity.AlarmRuleSegment">
+        SELECT *
+        FROM alarm_rule_segment
+        WHERE battery_type = #{batteryType}
+        AND signal_type = #{signalType}
+        <if test="warnId != null">
+            AND warnId = #{warnId}
+        </if>
+        AND range_min &lt;= #{value}
+        AND (range_max IS NULL OR #{value} &lt; range_max)
+        ORDER BY rule_order ASC
+        LIMIT 1
+    </select>
+
+</mapper>

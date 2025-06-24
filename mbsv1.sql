@@ -51,7 +51,7 @@ CREATE TABLE alarm_rule_segment (
 
 -- 电压差报警：三元电池（RUL-001）
 INSERT INTO alarm_rule_segment
-(rule_group_code, rule_name, battery_type, signal_type, range_min, range_max, alarm_level, rule_order)
+(warnId, rule_name, battery_type, signal_type, range_min, range_max, alarm_level, rule_order)
 VALUES
     ('RUL-001', '电压差报警', '三元电池', 'Mx-Mi', 5.000, NULL, 0, 1),
     ('RUL-001', '电压差报警', '三元电池', 'Mx-Mi', 3.000, 5.000, 1, 2),
@@ -61,7 +61,7 @@ VALUES
 -- 不报警 (<0.2)，可不插入或设 alarm_level = 5
 -- 电压差报警：铁锂电池（RUL-001）
 INSERT INTO alarm_rule_segment
-(rule_group_code, rule_name, battery_type, signal_type, range_min, range_max, alarm_level, rule_order)
+(warnId, rule_name, battery_type, signal_type, range_min, range_max, alarm_level, rule_order)
 VALUES
     ('RUL-001', '电压差报警', '铁锂电池', 'Mx-Mi', 2.000, NULL, 0, 1),
     ('RUL-001', '电压差报警', '铁锂电池', 'Mx-Mi', 1.000, 2.000, 1, 2),
@@ -71,7 +71,7 @@ VALUES
 
 -- 电流差报警：三元电池（RUL-002）
 INSERT INTO alarm_rule_segment
-(rule_group_code, rule_name, battery_type, signal_type, range_min, range_max, alarm_level, rule_order)
+(warnId, rule_name, battery_type, signal_type, range_min, range_max, alarm_level, rule_order)
 VALUES
     ('RUL-002', '电流差报警', '三元电池', 'Ix-Ii', 3.000, NULL, 0, 1),
     ('RUL-002', '电流差报警', '三元电池', 'Ix-Ii', 1.000, 3.000, 1, 2),
@@ -80,7 +80,7 @@ VALUES
 
 -- 电流差报警：铁锂电池（RUL-002）
 INSERT INTO alarm_rule_segment
-(rule_group_code, rule_name, battery_type, signal_type, range_min, range_max, alarm_level, rule_order)
+(warnId, rule_name, battery_type, signal_type, range_min, range_max, alarm_level, rule_order)
 VALUES
     ('RUL-002', '电流差报警', '铁锂电池', 'Ix-Ii', 1.000, NULL, 0, 1),
     ('RUL-002', '电流差报警', '铁锂电池', 'Ix-Ii', 0.500, 1.000, 1, 2),
