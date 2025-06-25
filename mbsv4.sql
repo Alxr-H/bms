@@ -49,7 +49,7 @@ CREATE TABLE alarm_rule_segment
 (
     id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY COMMENT '规则段主键',
 
-    warId INT UNSIGNED                  NOT NULL COMMENT '规则编号（如 1）',
+    warnId INT UNSIGNED                  NOT NULL COMMENT '规则编号（如 1）',
     warn_name       VARCHAR(64)                   NOT NULL COMMENT '规则名称（如 电压差报警）',
 
     battery_type    ENUM ('三元电池', '铁锂电池') NOT NULL COMMENT '适用电池类型',
@@ -64,9 +64,9 @@ CREATE TABLE alarm_rule_segment
     create_time     TIMESTAMP     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time     TIMESTAMP     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
 
-    INDEX idx_rule_lookup (warId, battery_type),
+    INDEX idx_rule_lookup (warnId, battery_type),
     INDEX idx_range (range_min, range_max),
-    INDEX idx_rule_full (warId, battery_type, signal_type, range_min, range_max)
+    INDEX idx_rule_full (warnId, battery_type, signal_type, range_min, range_max)
 
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT = '结构化预警规则段表';
@@ -112,10 +112,8 @@ CREATE TABLE warn_log (
                           battery_type VARCHAR(32) NOT NULL COMMENT '电池类型',
                           warn_name VARCHAR(64) NOT NULL COMMENT '报警名称',
                           warn_level TINYINT UNSIGNED NOT NULL COMMENT '报警等级',
-                          report_time DATETIME NOT NULL COMMENT '报警信号时间',
                           create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                           update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
 
-                          INDEX idx_car_id (car_id),
-                          INDEX idx_report_time (report_time)
+                          INDEX idx_car_id (car_id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '预警记录表';
