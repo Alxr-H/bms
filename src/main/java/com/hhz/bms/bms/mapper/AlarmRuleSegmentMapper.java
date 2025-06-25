@@ -4,6 +4,7 @@ import com.hhz.bms.bms.entity.AlarmRuleSegment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+//报警规则mapper
 @Mapper
 public interface AlarmRuleSegmentMapper {
     AlarmRuleSegment findMatchedRule(

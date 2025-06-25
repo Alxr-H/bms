@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhz.bms.bms.dto.WarnReportDTO;
 import com.hhz.bms.bms.entity.AlarmRuleSegment;
 import com.hhz.bms.bms.entity.VehicleInfo;
+import com.hhz.bms.bms.entity.WarnLog;
 import com.hhz.bms.bms.entity.WarnResultVO;
 import com.hhz.bms.bms.mapper.AlarmRuleSegmentMapper;
 import com.hhz.bms.bms.mapper.VehicleInfoMapper;
+import com.hhz.bms.bms.mapper.WarnLogMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,8 @@ public class WarnService {
     @Autowired
     private AlarmRuleSegmentMapper alarmRuleSegmentMapper;
 
+    @Autowired
+    private WarnLogMapper warnLogMapper;
     /**
      * 判断并生成预警数据列表
      */
@@ -64,6 +68,9 @@ public class WarnService {
                 AlarmRuleSegment rule = alarmRuleSegmentMapper.findMatchedRule(batteryType, signalType, 1, diff);
                 if (rule != null) {
                     result.add(new WarnResultVO(carId, batteryType, rule.getWarnName(), rule.getWarnLevel()));
+                    // 保存预警记录
+                    WarnLog log = new WarnLog(null, carId, batteryType, rule.getWarnName(), rule.getWarnLevel(), null, null);
+                    warnLogMapper.insertWarnLog(log);
                 }
             }
 
@@ -75,6 +82,9 @@ public class WarnService {
                 AlarmRuleSegment rule = alarmRuleSegmentMapper.findMatchedRule(batteryType, signalType, 2, diff);
                 if (rule != null) {
                     result.add(new WarnResultVO(carId, batteryType, rule.getWarnName(), rule.getWarnLevel()));
+                    // 保存预警记录
+                    WarnLog log = new WarnLog(null, carId, batteryType, rule.getWarnName(), rule.getWarnLevel(), null, null);
+                    warnLogMapper.insertWarnLog(log);
                 }
             }
         }

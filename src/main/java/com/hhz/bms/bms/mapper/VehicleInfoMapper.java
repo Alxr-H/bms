@@ -4,7 +4,7 @@ import com.hhz.bms.bms.entity.VehicleInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-
+//汽车基础信息
 @Mapper
 public interface VehicleInfoMapper {
     void insert(VehicleInfo vehicle);

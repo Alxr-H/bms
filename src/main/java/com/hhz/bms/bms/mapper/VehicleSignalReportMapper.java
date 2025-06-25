@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+//车辆信号上报mapper
 @Mapper
 public interface VehicleSignalReportMapper {
     void insert(VehicleSignalReport report);

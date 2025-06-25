@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhz.bms.bms.mapper.SignalReportProducerMapper">
+
+    <select id="selectRecentReports" resultType="com.hhz.bms.bms.entity.SignalReportProducer">
+        SELECT
+        car_id AS carId,       <!-- 映射数据库字段 car_id 到 carId -->
+        signal_mx AS Mx,       <!-- 映射数据库字段 signal_mx 到 Mx -->
+        signal_mi AS Mi,       <!-- 映射数据库字段 signal_mi 到 Mi -->
+        signal_ix AS Ix,       <!-- 映射数据库字段 signal_ix 到 Ix -->
+        signal_ii AS Ii        <!-- 映射数据库字段 signal_ii 到 Ii -->
+        FROM vehicle_signal_report
+        WHERE report_time >= #{fromTime}
+    </select>
+
+
+</mapper>
