@@ -19,4 +19,14 @@
         LIMIT 1
     </select>
 
+    <select id="findAll" resultType="com.hhz.bms.bms.entity.AlarmRuleSegment">
+        SELECT * FROM alarm_rule_segment
+    </select>
+
+    <select id="findByTypeAndSignal" resultType="com.hhz.bms.bms.entity.AlarmRuleSegment">
+        SELECT * FROM alarm_rule_segment
+        WHERE battery_type = #{batteryType}
+          AND signal_type = #{signalType}
+    </select>
+
 </mapper>

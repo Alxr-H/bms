@@ -5,10 +5,7 @@ import com.hhz.bms.bms.entity.WarnResultVO;
 import com.hhz.bms.bms.response.JsonResult;
 import com.hhz.bms.bms.service.WarnService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +18,13 @@ public class WarnController {
 
     @PostMapping("/warn")
     public JsonResult warn(@RequestBody List<WarnReportDTO> warnList) {
-        List<WarnResultVO> results = warnService.processWarnings(warnList);
+        List<WarnResultVO> results = warnService.processWarnings1(warnList);
         return JsonResult.ok(results);
+    }
+
+    @GetMapping("/warn/{carId}")
+    public JsonResult getWarnByCarId(@PathVariable Integer carId) {
+        List<WarnResultVO> warnList = warnService.getWarnResultsByCarId(carId);
+        return JsonResult.ok(warnList);
     }
 }

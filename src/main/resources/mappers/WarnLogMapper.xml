@@ -10,4 +10,23 @@
         VALUES (#{carId}, #{batteryType}, #{warnName}, #{warnLevel})
     </insert>
 
+    <select id="selectByCarId" resultType="com.hhz.bms.bms.entity.WarnLog">
+        SELECT
+            id,
+            car_id,
+            battery_type,
+            warn_name,
+            warn_level
+        FROM warn_log
+        WHERE car_id = #{carId}
+        ORDER BY create_time DESC
+    </select>
+    <insert id="batchInsert">
+        INSERT INTO warn_log (car_id, battery_type, warn_name, warn_level, create_time, update_time)
+        VALUES
+        <foreach collection="logs" item="log" separator=",">
+            (#{log.carId}, #{log.batteryType}, #{log.warnName}, #{log.warnLevel}, NOW(), NOW())
+        </foreach>
+    </insert>
+
 </mapper>

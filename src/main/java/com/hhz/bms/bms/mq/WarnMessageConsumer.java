@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,23 +16,31 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
 @Component
 @Slf4j
 @RocketMQMessageListener(topic = "warn-topic", consumerGroup = "warn-group")
 public class WarnMessageConsumer implements RocketMQListener<String> {
 
-    @Autowired
-    private ObjectMapper objectMapper; // Jackson ObjectMapper 用于转换 JSON
-
-    @Autowired
-    private WarnService warnService;
+//    @Autowired
+//    private ObjectMapper objectMapper; // Jackson ObjectMapper 用于转换 JSON
+//
+//    @Autowired
+//    private WarnService warnService;
 
     @Autowired
     private RestTemplate restTemplate;  // 注入 RestTemplate
 
+    @Autowired
+    @Qualifier("warnExecutor")  // 使用你配置的线程池
+    private Executor warnExecutor;
+
+    private final String targetUrl = "http://localhost:9081/api/warn";
+
     @Override
     public void onMessage(String message) {
+        warnExecutor.execute(() -> {
         try {
             // 打印接收到的原始消息
             log.info("收到预警消息: " + message);
@@ -42,7 +51,6 @@ public class WarnMessageConsumer implements RocketMQListener<String> {
 //            // 进一步处理 warnList，比如存数据库或记录日志
 //            warnService.processWarnings(warnList);
             // 不再反序列化，直接作为 JSON 字符串 POST 出去
-            String targetUrl = "http://localhost:9081/api/warn";
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -55,6 +63,7 @@ public class WarnMessageConsumer implements RocketMQListener<String> {
         } catch (Exception e) {
             log.error("消息处理失败: ", e);
         }
+        });
     }
 }
 
