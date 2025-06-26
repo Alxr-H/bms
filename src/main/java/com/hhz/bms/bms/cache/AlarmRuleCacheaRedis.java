@@ -48,7 +48,7 @@ public class AlarmRuleCacheaRedis {
             }
         }
 
-        log.info("预警规则缓存完成，共加载 {} 条规则", allRules.size());
+        log.info("预警规则本地缓存完成，共加载 {} 条规则", allRules.size());
         // 可选：预热写入 Redis
         preloadRedisCache();
     }

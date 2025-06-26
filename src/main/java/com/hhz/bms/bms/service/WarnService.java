@@ -2,7 +2,6 @@ package com.hhz.bms.bms.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhz.bms.bms.cache.AlarmRuleCache;
 import com.hhz.bms.bms.cache.AlarmRuleCacheaRedis;
 import com.hhz.bms.bms.dto.WarnReportDTO;
 import com.hhz.bms.bms.entity.AlarmRuleSegment;

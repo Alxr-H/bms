@@ -2,6 +2,8 @@ package com.hhz.bms.bms.controller;
 
 import com.hhz.bms.bms.dto.SignalReportDTO;
 import com.hhz.bms.bms.entity.VehicleSignalReport;
+import com.hhz.bms.bms.response.JsonResult;
+import com.hhz.bms.bms.response.StatusCode;
 import com.hhz.bms.bms.service.VehicleSignalReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,27 +17,50 @@ public class SignalReportController {
     @Autowired
     private VehicleSignalReportService service;
 
+    // 信号报告
     @PostMapping("/report")
-    public String report(@RequestBody SignalReportDTO dto) {
-        service.reportSignal(dto);
-        return "Signal reported successfully.";
+    public JsonResult report(@RequestBody SignalReportDTO dto) {
+        try {
+            service.reportSignal(dto);
+            return JsonResult.ok("车辆信号上报成功");
+        } catch (Exception e) {
+            return new JsonResult(StatusCode.ERROR, "不能上报车辆信号" + e.getMessage());
+        }
     }
 
+    // 获取指定车辆的信号
     @GetMapping("/car/{carId}")
-    public List<VehicleSignalReport> getSignals(@PathVariable Integer carId) {
-        return service.getSignalsByCarIdWithCache(carId);
+    public JsonResult getSignals(@PathVariable Integer carId) {
+        try {
+            List<VehicleSignalReport> signals = service.getSignalsByCarIdWithCache(carId);
+            if (signals.isEmpty()) {
+                return new JsonResult(StatusCode.NOT_FOUND, "没有找到对应车辆的信号。");
+            }
+            return JsonResult.ok(signals);
+        } catch (Exception e) {
+            return new JsonResult(StatusCode.ERROR, "不能获取车辆信号" + e.getMessage());
+        }
     }
 
+    // 更新信号--根据车架id匹配最近一条的数据进行更新
     @PutMapping("/update")
-    public String update(@RequestBody SignalReportDTO dto) {
-        service.updateSignal(dto);
-        return "Signal updated and cache refreshed.";
+    public JsonResult update(@RequestBody SignalReportDTO dto) {
+        try {
+            service.updateSignal(dto);
+            return JsonResult.ok("车辆信号更新成功");
+        } catch (Exception e) {
+            return new JsonResult(StatusCode.ERROR, "不能更新车辆信号" + e.getMessage());
+        }
     }
 
+    // 删除信号报告
     @DeleteMapping("/delete")
-    public String delete(@RequestBody SignalReportDTO dto) {
-        service.deleteSignal(dto);
-        return "Signal deleted and cache cleared.";
+    public JsonResult delete(@RequestBody SignalReportDTO dto) {
+        try {
+            service.deleteSignal(dto);
+            return JsonResult.ok("车辆信号删除成功");
+        } catch (Exception e) {
+            return new JsonResult(StatusCode.ERROR, "不能删除车辆信号" + e.getMessage());
+        }
     }
-
 }
