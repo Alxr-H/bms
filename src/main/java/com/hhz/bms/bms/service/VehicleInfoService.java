@@ -35,8 +35,8 @@ public class VehicleInfoService {
         mapper.update(vehicle);
     }
 
-    public void deleteVehicle(Integer id) {
-        mapper.deleteById(id);
+    public void deleteVehicle(Integer carId) {
+        mapper.deleteById(carId);
     }
 
     public VehicleInfo getVehicle(Integer carId) {

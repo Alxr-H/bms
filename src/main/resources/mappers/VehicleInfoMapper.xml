@@ -12,16 +12,17 @@
 
     <update id="update" parameterType="com.hhz.bms.bms.entity.VehicleInfo">
         UPDATE vehicle_info
-        SET vid = #{vid},
-            car_id = #{carId},
-            battery_type = #{batteryType},
-            total_mileage_km = #{totalMileageKm},
-            battery_health_percent = #{batteryHealthPercent}
-        WHERE id = #{id}
+        SET
+        car_id = #{carId},
+        battery_type = #{batteryType},
+        total_mileage_km = #{totalMileageKm},
+        battery_health_percent = #{batteryHealthPercent}
+        <if test="vid != null">, vid = #{vid}</if> <!-- 仅当 vid 不为 null 时才更新 -->
+        WHERE car_id = #{carId}
     </update>
 
     <delete id="deleteById" parameterType="int">
-        DELETE FROM vehicle_info WHERE id = #{id}
+        DELETE FROM vehicle_info WHERE car_id = #{carId}
     </delete>
 
     <select id="findByCarId" resultType="com.hhz.bms.bms.entity.VehicleInfo">

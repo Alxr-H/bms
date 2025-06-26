@@ -12,7 +12,7 @@ import java.util.Set;
 public interface VehicleInfoMapper {
     void insert(VehicleInfo vehicle);
     void update(VehicleInfo vehicle);
-    void deleteById(Integer id);
+    void deleteById(Integer carId);
     // 新增的方法：根据 carId 查电池信息
     VehicleInfo findByCarId(Integer carId);
     List<VehicleInfo> findAll();

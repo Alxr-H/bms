@@ -80,7 +80,7 @@ VALUES ('1', '电压差报警', '三元电池', 'Mx-Mi', 5.000, NULL, 0, 1),
        ('1', '电压差报警', '三元电池', 'Mx-Mi', 1.000, 3.000, 2, 3),
        ('1', '电压差报警', '三元电池', 'Mx-Mi', 0.600, 1.000, 3, 4),
        ('1', '电压差报警', '三元电池', 'Mx-Mi', 0.200, 0.600, 4, 5);
--- 不报警 (<0.2)，可不插入或设 warn_level = 5
+-- 不报警 (<0.2)，可不插入
 -- 电压差报警：铁锂电池（1）
 INSERT INTO alarm_rule_segment
 (warnId, warn_name, battery_type, signal_type, range_min, range_max, warn_level, rule_order)

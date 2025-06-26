@@ -53,7 +53,7 @@ public class VehicleSignalReportService {
         report.setSignalIi(dto.getSignalIi());
         report.setReportTime(LocalDateTime.now());
 
-        // 1st delete before DB write
+        // 1、写入数据库前删除redis
         redisTemplate.delete(getRedisKey(dto.getCarId()));
         log.info("Deleted cache before insert for carId: {}", dto.getCarId());
 
@@ -67,7 +67,7 @@ public class VehicleSignalReportService {
             log.warn("Interrupted during delay after DB insert", e);
         }
 
-        // 2nd delete after DB write
+        // 2、写入数据库后延迟删除redis
         redisTemplate.delete(getRedisKey(dto.getCarId()));
         log.info("Deleted cache after insert for carId: {}", dto.getCarId());
     }
