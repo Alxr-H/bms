@@ -17,14 +17,20 @@ public class SignalReportController {
     @Autowired
     private VehicleSignalReportService service;
 
-    // 信号报告
+    // 信号上报
     @PostMapping("/report")
-    public JsonResult report(@RequestBody SignalReportDTO dto) {
+    public JsonResult report(@RequestBody List<SignalReportDTO> dtoList) {
         try {
-            service.reportSignal(dto);
+            // 遍历列表中的每个 SignalReportDTO，逐个调用 reportSignal 方法
+            for (SignalReportDTO dto : dtoList) {
+                service.reportSignal(dto);
+            }
+
+            // 返回成功信息
             return JsonResult.ok("车辆信号上报成功");
         } catch (Exception e) {
-            return new JsonResult(StatusCode.ERROR, "不能上报车辆信号" + e.getMessage());
+            // 发生异常时返回错误信息
+            return new JsonResult(StatusCode.ERROR, "不能上报车辆信号: " + e.getMessage());
         }
     }
 
