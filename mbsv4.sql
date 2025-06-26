@@ -47,22 +47,22 @@ CREATE TABLE vehicle_signal_report
 
 CREATE TABLE alarm_rule_segment
 (
-    id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY COMMENT '规则段主键',
+    id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY COMMENT '规则段主键',
 
-    warnId INT UNSIGNED                  NOT NULL COMMENT '规则编号（如 1）',
-    warn_name       VARCHAR(64)                   NOT NULL COMMENT '规则名称（如 电压差报警）',
+    warnId       INT UNSIGNED                  NOT NULL COMMENT '规则编号（如 1）',
+    warn_name    VARCHAR(64)                   NOT NULL COMMENT '规则名称（如 电压差报警）',
 
-    battery_type    ENUM ('三元电池', '铁锂电池') NOT NULL COMMENT '适用电池类型',
-    signal_type     VARCHAR(32)                   NOT NULL COMMENT '信号类型（如 Mx-Mi, Ix-Ii）',
+    battery_type ENUM ('三元电池', '铁锂电池') NOT NULL COMMENT '适用电池类型',
+    signal_type  VARCHAR(32)                   NOT NULL COMMENT '信号类型（如 Mx-Mi, Ix-Ii）',
 
-    range_min       DECIMAL(7, 3)                 NOT NULL COMMENT '区间下限（闭区间）',
-    range_max       DECIMAL(7, 3) DEFAULT NULL COMMENT '区间上限（开区间，NULL 表示无上限）',
+    range_min    DECIMAL(7, 3)                 NOT NULL COMMENT '区间下限（闭区间）',
+    range_max    DECIMAL(7, 3) DEFAULT NULL COMMENT '区间上限（开区间，NULL 表示无上限）',
 
-    warn_level      TINYINT UNSIGNED              NOT NULL COMMENT '报警等级（0 为最高响应）',
-    rule_order      TINYINT UNSIGNED              NOT NULL COMMENT '匹配优先级（值越小优先级越高）',
+    warn_level   TINYINT UNSIGNED              NOT NULL COMMENT '报警等级（0 为最高响应）',
+    rule_order   TINYINT UNSIGNED              NOT NULL COMMENT '匹配优先级（值越小优先级越高）',
 
-    create_time     TIMESTAMP     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    update_time     TIMESTAMP     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    create_time  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time  TIMESTAMP     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
 
     INDEX idx_rule_lookup (warnId, battery_type),
     INDEX idx_range (range_min, range_max),
@@ -106,19 +106,17 @@ VALUES ('2', '电流差报警', '铁锂电池', 'Ix-Ii', 1.000, NULL, 0, 1),
        ('2', '电流差报警', '铁锂电池', 'Ix-Ii', 0.200, 0.500, 2, 3);
 
 
-CREATE TABLE warn_log (
-                          id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY COMMENT '主键 ID',
-                          car_id INT UNSIGNED NOT NULL COMMENT '车辆编号',
-                          battery_type VARCHAR(32) NOT NULL COMMENT '电池类型',
-                          warn_name VARCHAR(64) NOT NULL COMMENT '报警名称',
-                          warn_level TINYINT UNSIGNED NOT NULL COMMENT '报警等级',
-                          create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                          update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-
-                          INDEX idx_car_id (car_id)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '预警记录表';
-
-ALTER TABLE warn_log
-    ADD CONSTRAINT fk_warn_car_id
-        FOREIGN KEY (car_id)
-            REFERENCES vehicle_info(car_id);
+CREATE TABLE warn_log
+(
+    id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY COMMENT '主键 ID',
+    car_id       INT UNSIGNED     NOT NULL COMMENT '车辆编号',
+    battery_type VARCHAR(32)      NOT NULL COMMENT '电池类型',
+    warn_name    VARCHAR(64)      NOT NULL COMMENT '报警名称',
+    warn_level   TINYINT UNSIGNED NOT NULL COMMENT '报警等级',
+    create_time  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    CONSTRAINT fk_warn_car_id FOREIGN KEY (car_id)
+        REFERENCES vehicle_info (car_id),
+    INDEX idx_car_id (car_id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT = '预警记录表';

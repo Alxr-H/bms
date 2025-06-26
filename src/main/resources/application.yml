@@ -39,4 +39,17 @@ xxl:
       #日志保存天数
       logretentiondays: 30
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics
+  endpoint:
+    metrics:
+      enabled: true
+  metrics:
+    enable:
+      web:
+        server:
+          request: true
 
