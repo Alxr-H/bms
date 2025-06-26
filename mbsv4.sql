@@ -118,3 +118,7 @@ CREATE TABLE warn_log (
                           INDEX idx_car_id (car_id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '预警记录表';
 
+ALTER TABLE warn_log
+    ADD CONSTRAINT fk_warn_car_id
+        FOREIGN KEY (car_id)
+            REFERENCES vehicle_info(car_id);
