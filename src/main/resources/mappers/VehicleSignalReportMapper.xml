@@ -36,9 +36,11 @@
     </update>
 
     <!-- 根据 carId 删除记录 -->
-    <delete id="deleteByCarId" parameterType="int">
+    <delete id="deleteByCarId">
         DELETE FROM vehicle_signal_report
         WHERE car_id = #{carId}
+            ORDER BY report_time DESC
+        LIMIT 1
     </delete>
 
 </mapper>

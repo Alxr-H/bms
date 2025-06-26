@@ -27,24 +27,24 @@ public class VehicleSignalReportService {
     }
 
     public List<VehicleSignalReport> getSignalsByCarIdWithCache(Integer carId) {
-        log.info("Getting signals for carId: {}", carId);
+        log.info("得到信号的车架编号: {}", carId);
         String key = getRedisKey(carId);
         List<VehicleSignalReport> reports = (List<VehicleSignalReport>) redisTemplate.opsForValue().get(key);
         if (reports == null) {
-            log.info("Cache miss. Querying database...");
+            log.info("缓存没有命中，访问数据库");
             reports = mapper.selectByCarId(carId);
             if (reports != null && !reports.isEmpty()) {
                 redisTemplate.opsForValue().set(key, reports, Duration.ofMinutes(10));
-                log.info("Database result cached for carId: {}", carId);
+                log.info("将数据库的结果放入redis缓存中: {}", carId);
             }
         } else {
-            log.info("Cache hit for carId: {}", carId);
+            log.info("redis缓存中有车架ID: {}", carId);
         }
         return reports;
     }
 
     public void reportSignal(SignalReportDTO dto) {
-        log.info("Reporting signal for carId: {}", dto.getCarId());
+        log.info("得到信号的车架编号: {}", dto.getCarId());
         VehicleSignalReport report = new VehicleSignalReport();
         report.setCarId(dto.getCarId());
         report.setSignalMx(dto.getSignalMx());
@@ -73,10 +73,10 @@ public class VehicleSignalReportService {
     }
 
     public void updateSignal(SignalReportDTO dto) {
-        log.info("Updating signal for carId: {}", dto.getCarId());
+        log.info("要更新的车架编号: {}", dto.getCarId());
 
         redisTemplate.delete(getRedisKey(dto.getCarId()));
-        log.info("Deleted cache before update");
+        log.info("删除redis中的车架编号");
 
         mapper.updateByCarId(dto);
 
@@ -84,18 +84,17 @@ public class VehicleSignalReportService {
             Thread.sleep(500); // 延迟双删
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            log.warn("Interrupted during delay after DB update", e);
+            log.warn("异常：", e);
         }
 
         redisTemplate.delete(getRedisKey(dto.getCarId()));
-        log.info("Deleted cache after update");
+        log.info("删除redis中的缓存");
     }
 
     public void deleteSignal(SignalReportDTO dto) {
-        log.info("Deleting signal for carId: {}", dto.getCarId());
+        log.info("要删除的车架编号信号: {}", dto.getCarId());
 
         redisTemplate.delete(getRedisKey(dto.getCarId()));
-        log.info("Deleted cache before delete");
 
         mapper.deleteByCarId(dto.getCarId());
 
@@ -103,10 +102,10 @@ public class VehicleSignalReportService {
             Thread.sleep(500); // 延迟双删
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            log.warn("Interrupted during delay after DB delete", e);
+            log.warn("异常：", e);
         }
 
         redisTemplate.delete(getRedisKey(dto.getCarId()));
-        log.info("Deleted cache after delete");
+        log.info("再次删除缓存");
     }
 }
