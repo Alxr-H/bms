@@ -133,7 +133,7 @@ public class AlarmRuleCacheaRedis {
 
     private AlarmRuleSegment matchRule(List<AlarmRuleSegment> rules, double diff) {
         for (AlarmRuleSegment rule : rules) {
-            if (diff >= rule.getRangeMin() && diff < rule.getRangeMax()) {
+            if (diff >= rule.getRangeMin() && (rule.getRangeMax()==null||diff < rule.getRangeMax())) {
                 return rule;
             }
         }
